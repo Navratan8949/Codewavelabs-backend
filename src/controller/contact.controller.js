@@ -104,4 +104,83 @@ const listContacts = async (req, res, next) => {
   }
 };
 
-module.exports = { submitContact, listContacts };
+const listById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const doc = await ContactMessage.findById(id);
+    res.json({ data: doc });
+  } catch (e) {
+    next(e);
+  }
+};
+
+const bulkUpdateStatus = async (req, res, next) => {
+  try {
+    const { contactIds, newStatus } = req.body;
+
+    if (!Array.isArray(contactIds) || contactIds.length === 0) {
+      return res.status(400).json({ message: "contactIds array is required" });
+    }
+
+    if (!["new", "read", "archived"].includes(newStatus)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const result = await ContactMessage.updateMany(
+      { _id: { $in: contactIds } },
+      { $set: { status: newStatus } }
+    );
+
+    res.json({
+      success: true,
+      message: `Updated ${result.modifiedCount} contacts`,
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateSingleStatus = async (req, res, next) => {
+  try {
+    const { contactId } = req.params;
+    const { newStatus } = req.body;
+
+    console.log(contactId, newStatus);
+
+    const result = await ContactMessage.updateOne(
+      { _id: contactId },
+      { $set: { status: newStatus } }
+    );
+    res.json({
+      success: true,
+      message: `Updated ${result.modifiedCount} contact`,
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteContact = async (req, res, next) => {
+  try {
+    const { contactId } = req.params;
+    const result = await ContactMessage.deleteOne({ _id: contactId });
+    res.json({
+      success: true,
+      message: `Deleted ${result.deletedCount} contact`,
+      result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  submitContact,
+  listContacts,
+  listById,
+  bulkUpdateStatus,
+  updateSingleStatus,
+  deleteContact,
+};

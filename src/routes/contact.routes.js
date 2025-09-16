@@ -3,11 +3,19 @@ const { Router } = require("express");
 const {
   submitContact,
   listContacts,
+  listById,
+  bulkUpdateStatus,
+  deleteContact,
+  updateSingleStatus,
 } = require("../controller/contact.controller.js");
 
 const router = Router();
 
 router.post("/", submitContact); // public endpoint for your form
 router.get("/", listContacts); // protect with auth later (admin inbox)
+router.get("/:id", listById);
+router.put("/bulk-status", bulkUpdateStatus);
+router.put("/:contactId", updateSingleStatus);
+router.delete("/:id", deleteContact);
 
 module.exports = router;

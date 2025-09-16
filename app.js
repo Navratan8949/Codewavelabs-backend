@@ -14,6 +14,7 @@ app.use(
     origin: [
       process.env.CORS_ORIGIN,
       "http://localhost:3000",
+      "http://localhost:4000",
       "https://codewavelabs-two.vercel.app",
     ],
     credentials: true,
