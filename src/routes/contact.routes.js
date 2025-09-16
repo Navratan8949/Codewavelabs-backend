@@ -16,6 +16,6 @@ router.get("/", listContacts); // protect with auth later (admin inbox)
 router.get("/:id", listById);
 router.put("/bulk-status", bulkUpdateStatus);
 router.put("/:contactId", updateSingleStatus);
-router.delete("/:id", deleteContact);
+router.delete("/:contactId", deleteContact);
 
 module.exports = router;
