@@ -107,29 +107,21 @@ const listContacts = async (req, res, next) => {
 const listById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const doc = await ContactMessage.findById(id);
-    res.json({ data: doc });
-  } catch (e) {
-    next(e);
-  }
-};
 
-const ContactById = async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-
-    if (!contactId) {
+    if (!id) {
       return res.status(400).json({ message: "contactId is required" });
     }
 
-    const contact = await ContactMessage.findById(contactId);
+    const contact = await ContactMessage.findById(id);
 
     if (!contact) {
       return res.status(404).json({ message: "Contact not found" });
     }
 
     res.status(200).json({ data: contact, success: true });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 const bulkUpdateStatus = async (req, res, next) => {
@@ -198,7 +190,6 @@ module.exports = {
   submitContact,
   listContacts,
   listById,
-  ContactById,
   bulkUpdateStatus,
   updateSingleStatus,
   deleteContact,
