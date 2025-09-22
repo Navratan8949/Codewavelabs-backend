@@ -121,9 +121,9 @@ exports.updateProject = async (req, res, next) => {
     if (b.published !== undefined)
       current.published = b.published === "true" || b.published === true;
 
-    // Add new gallery images
-    if (req.files?.gallery?.length) {
-      for (const f of req.files.gallery) {
+    // Add new images to images
+    if (req.files?.images?.length) {
+      for (const f of req.files.images) {
         const up = await uploadImageOnCloudinary(f.path);
         if (up)
           current.images.push({
