@@ -16,6 +16,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:4000",
       "https://codewavelabs-two.vercel.app",
+      "https://codetech-solution-xi.vercel.app"
     ],
     credentials: true,
   })
